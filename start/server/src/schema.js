@@ -31,6 +31,12 @@ const typeDefs = gql`
     SMALL
     LARGE
   }
+
+  type Query {
+    launches: [launch]!
+    launch(id: ID!): Launch
+    me: User
+  }
 `
 
 export default typeDefs
