@@ -1,11 +1,12 @@
-import { gql } from 'apollo-server'
+const { gql } = require('apollo-server')
 
 // uses schema definition language (SDL)
 const typeDefs = gql`
   type Launch {
     id: ID!
     site: String
-    mission: missionrocket: Rocket
+    mission: Mission
+    rocket: Rocket
     isBooked: Boolean!
   }
 
@@ -33,7 +34,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    launches: [launch]!
+    launches: [Launch]!
     launch(id: ID!): Launch
     me: User
   }
@@ -49,6 +50,7 @@ const typeDefs = gql`
     message: String
     launches: [Launch]
   }
+
 `
 
-export default typeDefs
+module.exports = typeDefs
