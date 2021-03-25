@@ -33,7 +33,8 @@ export const GET_LAUNCHES = gql`
 `;
 
 const Launches = () => {
-  const { data, loading, error } = useQuery(GET_LAUNCHES);
+  const { data, loading, error, fetchMore } = useQuery(GET_LAUNCHES);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
@@ -47,6 +48,28 @@ const Launches = () => {
         data.launches.launches.map(launch => (
           <LaunchTile key={launch.id} launch={launch} />
         ))}
+      {
+        data.launches &&
+          data.launches.hasMore &&
+          (isLoadingMore ? (
+            <Loading />
+          ) : (
+            <Button
+              onClick={async () => {
+                setIsLoadingMore(true);
+                await fetchMore({
+                  variables: {
+                    after: data.launches.cursor
+                  }
+                });
+
+                setIsLoadingMore(false);
+              }}
+            >
+              Load More
+            </Button>
+          ))
+      }
     </Fragment>
   );
 };
